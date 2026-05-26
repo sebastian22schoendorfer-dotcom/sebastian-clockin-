@@ -9,6 +9,7 @@ type Row = {
   rate_regular_usd: number;
   effective_from: string;
   effective_to: string | null;
+  signed_at: string | null;
   ot_policy: { basis: string; multiplier: number; weekly_threshold_h: number; daily_threshold_h: number };
   staff: { full_name: string } | null;
   locations: { name: string } | null;
@@ -17,9 +18,11 @@ type Row = {
 export default async function ContractsPage() {
   const ctx = await requireAdmin();
   const sb = createServiceClient();
+
   const { data } = await sb.from("contracts").select(
-    "id, rate_regular_usd, effective_from, effective_to, ot_policy, staff(full_name), locations(name)",
-  ).eq("tenant_id", ctx.tenant_id).is("soft_deleted_at", null).order("effective_from", { ascending: false });
+    "id, rate_regular_usd, effective_from, effective_to, signed_at, ot_policy, staff(full_name), locations(name)",
+  ).eq("tenant_id", ctx.tenant_id).is("soft_deleted_at", null)
+   .order("effective_from", { ascending: false });
 
   const rows = (data ?? []) as unknown as Row[];
 
@@ -41,6 +44,8 @@ export default async function ContractsPage() {
               <TableHead>Rate</TableHead>
               <TableHead>OT policy</TableHead>
               <TableHead>Effective</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -51,6 +56,13 @@ export default async function ContractsPage() {
                 <TableCell>${r.rate_regular_usd.toFixed(2)}/h</TableCell>
                 <TableCell className="text-xs text-muted-foreground">{policySummary(r.ot_policy)}</TableCell>
                 <TableCell>{r.effective_from} → {r.effective_to ?? "open"}</TableCell>
+                <TableCell>
+                  {r.signed_at ? <span className="text-xs">Signed</span> :
+                    <span className="text-xs text-destructive">Unsigned</span>}
+                </TableCell>
+                <TableCell className="text-right">
+                  <Link href={`/admin/contracts/${r.id}`} className="text-sm underline">View</Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
