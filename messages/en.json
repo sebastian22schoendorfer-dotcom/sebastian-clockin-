@@ -1,0 +1,15 @@
+{
+  "app": { "name": "ClockIn", "tagline": "Restaurant time-clock for Bonaire" },
+  "common": { "signIn": "Sign in", "signOut": "Sign out", "cancel": "Cancel", "save": "Save", "loading": "Loading…" },
+  "clock": {
+    "clockIn": "Clock In",
+    "clockOut": "Clock Out",
+    "breakStart": "Start Break",
+    "breakEnd": "End Break",
+    "outOfZone": "You are {distance} m from {location}. Request manager override?",
+    "requestOverride": "Request manager override",
+    "lowAccuracy": "GPS accuracy too low. Move outside or wait a moment, then try again.",
+    "pendingSync": "Saved offline — will sync when back online."
+  },
+  "errors": { "generic": "Something went wrong. Please try again." }
+}

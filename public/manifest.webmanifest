@@ -1,0 +1,14 @@
+{
+  "name": "ClockIn — Restaurant time-clock",
+  "short_name": "ClockIn",
+  "description": "Staff time-clock and payroll overview for Bonaire restaurants.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
