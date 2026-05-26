@@ -7,6 +7,7 @@ const NAV = [
   { href: "/admin/locations", label: "Locations" },
   { href: "/admin/staff", label: "Staff" },
   { href: "/admin/contracts", label: "Contracts" },
+  { href: "/admin/payroll", label: "Payroll" },
 ];
 
 export function Sidebar({
