@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { readStaffSession } from "@/lib/auth/staff-session";
 import { createServiceClient } from "@/lib/supabase/server";
+import { sendEmail, getManagerEmails } from "@/lib/notifications/email";
 
 const InputSchema = z.object({
   location_id: z.string().uuid(),
@@ -46,6 +47,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   if (error || !row) {
     return NextResponse.json({ ok: false, reason: "INTERNAL", message: error?.message }, { status: 500 });
+  }
+
+  // Decision #2: email-only notification, fire-and-forget.
+  const managers = await getManagerEmails(session.tenant_id);
+  if (managers.length > 0) {
+    const { data: staff } = await sb.from("staff").select("full_name").eq("id", session.staff_id).maybeSingle();
+    const { data: loc } = await sb.from("locations").select("name").eq("id", parsed.data.location_id).maybeSingle();
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
+    void sendEmail({
+      to: managers,
+      subject: `Override request from ${staff?.full_name ?? "staff"}`,
+      html: `
+        <p><strong>${staff?.full_name ?? "A staff member"}</strong> is requesting an out-of-zone clock-in.</p>
+        <ul>
+          <li>Location: ${loc?.name ?? "—"}</li>
+          <li>Distance from perimeter: ${Math.round(parsed.data.distance_m)} m</li>
+          <li>GPS accuracy: ±${Math.round(parsed.data.accuracy_m)} m</li>
+        </ul>
+        <p><a href="${appUrl}/admin/overrides">Review in ClockIn</a></p>
+      `,
+    });
   }
 
   return NextResponse.json({ ok: true, override_request_id: row.id }, { status: 200 });

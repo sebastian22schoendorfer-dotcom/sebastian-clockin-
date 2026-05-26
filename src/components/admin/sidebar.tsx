@@ -2,20 +2,16 @@ import Link from "next/link";
 
 const NAV = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/overrides", label: "Overrides" },
+  { href: "/admin/closes", label: "Pending closes" },
   { href: "/admin/locations", label: "Locations" },
   { href: "/admin/staff", label: "Staff" },
   { href: "/admin/contracts", label: "Contracts" },
 ];
 
 export function Sidebar({
-  fullName,
-  role,
-  email,
-}: {
-  fullName: string;
-  role: string;
-  email: string;
-}) {
+  fullName, role, email,
+}: { fullName: string; role: string; email: string }) {
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-border bg-card">
       <div className="px-6 py-5">
