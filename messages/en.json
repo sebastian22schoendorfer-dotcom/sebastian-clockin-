@@ -1,6 +1,22 @@
 {
   "app": { "name": "ClockIn", "tagline": "Restaurant time-clock for Bonaire" },
-  "common": { "signIn": "Sign in", "signOut": "Sign out", "cancel": "Cancel", "save": "Save", "loading": "Loading…" },
+  "home": { "staffSignIn": "Staff sign in", "adminSignIn": "Admin sign in" },
+  "common": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading…",
+    "email": "Email",
+    "password": "Password",
+    "pin": "PIN"
+  },
+  "auth": {
+    "invalidCredentials": "Invalid email or PIN.",
+    "lockedOut": "Account is locked. Try again in {minutes} minutes.",
+    "passwordTooShort": "Password must be at least 12 characters.",
+    "codeRequired": "Enter your 6-digit code."
+  },
   "clock": {
     "clockIn": "Clock In",
     "clockOut": "Clock Out",
