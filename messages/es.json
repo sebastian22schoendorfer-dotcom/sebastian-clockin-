@@ -1,0 +1,31 @@
+{
+  "app": { "name": "ClockIn", "tagline": "Control horario para restaurantes en Bonaire" },
+  "home": { "staffSignIn": "Iniciar sesión (personal)", "adminSignIn": "Iniciar sesión (admin)" },
+  "common": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "loading": "Cargando…",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "pin": "PIN"
+  },
+  "auth": {
+    "invalidCredentials": "Correo o PIN inválido.",
+    "lockedOut": "Cuenta bloqueada. Inténtalo de nuevo en {minutes} minutos.",
+    "passwordTooShort": "La contraseña debe tener al menos 12 caracteres.",
+    "codeRequired": "Introduce tu código de 6 dígitos."
+  },
+  "clock": {
+    "clockIn": "Entrar",
+    "clockOut": "Salir",
+    "breakStart": "Iniciar descanso",
+    "breakEnd": "Terminar descanso",
+    "outOfZone": "Estás a {distance} m de {location}. ¿Solicitar autorización del supervisor?",
+    "requestOverride": "Solicitar autorización",
+    "lowAccuracy": "Precisión GPS insuficiente.",
+    "pendingSync": "Guardado sin conexión — se sincronizará al volver a la red."
+  },
+  "errors": { "generic": "Algo salió mal." }
+}

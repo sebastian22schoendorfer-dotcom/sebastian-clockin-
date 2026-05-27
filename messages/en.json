@@ -1,0 +1,31 @@
+{
+  "app": { "name": "ClockIn", "tagline": "Restaurant time-clock for Bonaire" },
+  "home": { "staffSignIn": "Staff sign in", "adminSignIn": "Admin sign in" },
+  "common": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading…",
+    "email": "Email",
+    "password": "Password",
+    "pin": "PIN"
+  },
+  "auth": {
+    "invalidCredentials": "Invalid email or PIN.",
+    "lockedOut": "Account is locked. Try again in {minutes} minutes.",
+    "passwordTooShort": "Password must be at least 12 characters.",
+    "codeRequired": "Enter your 6-digit code."
+  },
+  "clock": {
+    "clockIn": "Clock In",
+    "clockOut": "Clock Out",
+    "breakStart": "Start Break",
+    "breakEnd": "End Break",
+    "outOfZone": "You are {distance} m from {location}. Request manager override?",
+    "requestOverride": "Request manager override",
+    "lowAccuracy": "GPS accuracy too low. Move outside or wait a moment, then try again.",
+    "pendingSync": "Saved offline — will sync when back online."
+  },
+  "errors": { "generic": "Something went wrong. Please try again." }
+}

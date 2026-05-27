@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --primary: 222 47% 11%;
+    --primary-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --kitchen: 25 95% 53%;
+    --kitchen-foreground: 0 0% 100%;
+    --service: 217 91% 60%;
+    --service-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground antialiased; }
+}
