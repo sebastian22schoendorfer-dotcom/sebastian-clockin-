@@ -31,7 +31,12 @@ export default async function EditStaffPage({
 
   return (
     <main className="space-y-6 p-8">
-      <h1 className="text-3xl font-semibold tracking-tight">Edit staff</h1>
+      <div className="flex items-end justify-between gap-3">
+        <h1 className="text-3xl font-semibold tracking-tight">Edit staff</h1>
+        <a href={`/admin/staff/${id}/timecard`} className="text-sm underline">
+          View / edit timecard →
+        </a>
+      </div>
 
       {new_pin && (
         <Card>

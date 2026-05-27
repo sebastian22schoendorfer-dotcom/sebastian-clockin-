@@ -17,13 +17,12 @@ export type StaffFormInitial = {
 };
 
 export function StaffForm({
-  initial,
-  locations,
-  error,
+  initial, locations, error, canSetRate,
 }: {
   initial?: StaffFormInitial;
   locations: { id: string; name: string }[];
   error?: string;
+  canSetRate?: boolean;
 }) {
   const isEdit = !!initial?.id;
   return (
@@ -82,6 +81,25 @@ export function StaffForm({
           ))}
         </Select>
       </div>
+
+      {canSetRate && !isEdit && (
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="rate_regular_usd">Hourly rate (USD)</Label>
+          <Input
+            id="rate_regular_usd"
+            name="rate_regular_usd"
+            type="number"
+            step="0.25"
+            min="0.25"
+            max="999"
+            placeholder="Optional — sets up payroll immediately"
+          />
+          <p className="text-xs text-muted-foreground">
+            Optional. If set, a starter contract is created and payroll calculations
+            include this staff member immediately. You can change rates later under Contracts.
+          </p>
+        </div>
+      )}
 
       {error && <p className="text-sm text-destructive">{decodeURIComponent(error)}</p>}
 

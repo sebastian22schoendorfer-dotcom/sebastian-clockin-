@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { createServiceClient } from "@/lib/supabase/server";
 
 const ContractSchema = z.object({
@@ -20,7 +20,7 @@ const ContractSchema = z.object({
 });
 
 export async function createContract(formData: FormData): Promise<void> {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const parsed = ContractSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
     redirect("/admin/contracts/new?error=" + encodeURIComponent(parsed.error.issues.map(i => i.message).join("; ")));

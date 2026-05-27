@@ -19,7 +19,7 @@ export async function approveOverride(formData: FormData): Promise<void> {
 
   const sb = createServiceClient();
   const { data: req } = await sb.from("override_requests")
-    .select("id, staff_id, requested_location_id, lat, lng, accuracy_m, distance_m, status")
+    .select("id, staff_id, requested_location_id, requested_event_type, lat, lng, accuracy_m, distance_m, status")
     .eq("id", parsed.data.id).eq("tenant_id", ctx.tenant_id).maybeSingle();
 
   if (!req || req.status !== "PENDING") {
@@ -31,7 +31,7 @@ export async function approveOverride(formData: FormData): Promise<void> {
     tenant_id: ctx.tenant_id,
     staff_id: req.staff_id,
     location_id: req.requested_location_id,
-    type: "IN",
+    type: req.requested_event_type,
     event_at: approvedAt,
     lat: req.lat,
     lng: req.lng,
@@ -57,10 +57,11 @@ export async function approveOverride(formData: FormData): Promise<void> {
     action: "override_request.approve",
     target_table: "override_requests",
     target_id: req.id,
-    after: { approval_clock_event_id: event.id },
+    after: { approval_clock_event_id: event.id, type: req.requested_event_type },
   });
 
   revalidatePath("/admin/overrides");
+  revalidatePath("/admin");
   redirect("/admin/overrides");
 }
 
@@ -77,9 +78,7 @@ export async function rejectOverride(formData: FormData): Promise<void> {
     rejection_reason: parsed.data.rejection_reason ?? null,
   }).eq("id", parsed.data.id).eq("tenant_id", ctx.tenant_id).eq("status", "PENDING");
 
-  if (error) {
-    redirect("/admin/overrides?error=" + encodeURIComponent(error.message));
-  }
+  if (error) redirect("/admin/overrides?error=" + encodeURIComponent(error.message));
 
   await sb.from("audit_log").insert({
     tenant_id: ctx.tenant_id,

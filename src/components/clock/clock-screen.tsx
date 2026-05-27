@@ -32,7 +32,7 @@ type Status =
   | { kind: "idle" }
   | { kind: "locating" }
   | { kind: "low_accuracy"; accuracy_m: number }
-  | { kind: "out_of_zone"; distance_m: number; radius_m: number; fix: Fix }
+  | { kind: "out_of_zone"; distance_m: number; radius_m: number; fix: Fix; requestedType: ClockEventType }
   | { kind: "permission_denied" }
   | { kind: "position_unavailable" }
   | { kind: "success"; type: ClockEventType }
@@ -122,6 +122,7 @@ export function ClockScreen({ initialSnapshot, locations, recent }: Props) {
           distance_m: body.distance_m,
           radius_m: body.radius_m,
           fix,
+          requestedType: type,
         });
       } else {
         setStatus({ kind: "error", message: body.message ?? body.reason });
@@ -173,6 +174,7 @@ export function ClockScreen({ initialSnapshot, locations, recent }: Props) {
         lng: fix.lng,
         accuracy_m: fix.accuracy_m,
         distance_m: status.distance_m,
+        requested_event_type: status.requestedType,
       }),
     });
     if (res.ok) {

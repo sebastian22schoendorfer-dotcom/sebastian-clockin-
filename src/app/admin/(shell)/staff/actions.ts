@@ -16,13 +16,14 @@ const StaffSchema = z.object({
   date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   status: z.enum(["ACTIVE", "SUSPENDED", "ARCHIVED"]).default("ACTIVE"),
   primary_location_id: z.string().uuid(),
+  rate_regular_usd: z.coerce.number().positive().max(999).optional().or(z.literal("").transform(() => undefined)),
 });
 
 export async function createStaff(formData: FormData): Promise<void> {
   const ctx = await requireAdmin();
   const parsed = StaffSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
-    redirect("/admin/staff/new?error=" + encodeURIComponent(parsed.error.issues.map(i => i.message).join("; ")));
+    redirect("/admin/staff/new?error=" + encodeURIComponent(parsed.error.issues.map((i) => i.message).join("; ")));
   }
   const sb = createServiceClient();
   const pin = generatePin();
@@ -40,12 +41,25 @@ export async function createStaff(formData: FormData): Promise<void> {
   if (error || !staff) {
     redirect("/admin/staff/new?error=" + encodeURIComponent(error?.message ?? "Insert failed."));
   }
+
   await sb.from("staff_locations").insert({
     tenant_id: ctx.tenant_id,
     staff_id: staff.id,
     location_id: parsed.data.primary_location_id,
     is_primary: true,
   });
+
+  if (parsed.data.rate_regular_usd && parsed.data.rate_regular_usd > 0) {
+    const today = new Date().toISOString().slice(0, 10);
+    await sb.from("contracts").insert({
+      tenant_id: ctx.tenant_id,
+      staff_id: staff.id,
+      location_id: parsed.data.primary_location_id,
+      rate_regular_usd: parsed.data.rate_regular_usd,
+      effective_from: today,
+    });
+  }
+
   revalidatePath("/admin/staff");
   redirect(`/admin/staff/${staff.id}?new_pin=${pin}`);
 }

@@ -12,9 +12,7 @@ export type AdminContext = {
 
 export async function requireAdmin(): Promise<AdminContext> {
   const sb = await createServerClient();
-  const {
-    data: { user },
-  } = await sb.auth.getUser();
+  const { data: { user } } = await sb.auth.getUser();
   if (!user) redirect("/admin/sign-in");
 
   const service = createServiceClient();
@@ -39,7 +37,7 @@ export async function requireAdmin(): Promise<AdminContext> {
 export async function requireOwner(): Promise<AdminContext> {
   const ctx = await requireAdmin();
   if (ctx.role !== "OWNER") {
-    redirect("/admin?error=" + encodeURIComponent("Owner role required for this action."));
+    redirect("/admin?error=" + encodeURIComponent("Owner role required."));
   }
   return ctx;
 }

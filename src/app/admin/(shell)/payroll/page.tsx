@@ -1,4 +1,4 @@
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { computePayroll } from "@/lib/payroll/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +22,7 @@ function defaultPeriod(): { start: string; end: string } {
 }
 
 export default async function PayrollPage({ searchParams }: { searchParams: SearchParams }) {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const params = await searchParams;
   const period = {
     start: params.start ?? defaultPeriod().start,

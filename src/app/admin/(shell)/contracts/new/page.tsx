@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { createServiceClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { createContract } from "../actions";
 type SearchParams = Promise<{ error?: string }>;
 
 export default async function NewContractPage({ searchParams }: { searchParams: SearchParams }) {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const { error } = await searchParams;
   const sb = createServiceClient();
   const [{ data: staff }, { data: locations }] = await Promise.all([

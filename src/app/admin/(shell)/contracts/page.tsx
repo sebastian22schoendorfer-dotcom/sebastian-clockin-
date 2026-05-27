@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { createServiceClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -16,7 +16,7 @@ type Row = {
 };
 
 export default async function ContractsPage() {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const sb = createServiceClient();
 
   const { data } = await sb.from("contracts").select(

@@ -1,10 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { computePayroll } from "@/lib/payroll/server";
 import { timesheetsToCsv } from "@/lib/payroll/csv";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const url = new URL(req.url);
   const start = url.searchParams.get("start");
   const end = url.searchParams.get("end");

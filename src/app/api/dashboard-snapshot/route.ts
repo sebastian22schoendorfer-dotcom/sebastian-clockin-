@@ -1,19 +1,10 @@
+import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/admin-context";
 import { createServiceClient } from "@/lib/supabase/server";
-import { DashboardLive } from "@/components/admin/dashboard-live";
 
 export const dynamic = "force-dynamic";
 
-type ActiveRow = {
-  staff_id: string;
-  full_name: string;
-  job_role: "KITCHEN" | "SERVICE";
-  location_name: string;
-  state: "CLOCKED_IN" | "ON_BREAK";
-  since: string;
-};
-
-export default async function AdminDashboard() {
+export async function GET(): Promise<NextResponse> {
   const ctx = await requireAdmin();
   const sb = createServiceClient();
 
@@ -27,18 +18,10 @@ export default async function AdminDashboard() {
         .eq("tenant_id", ctx.tenant_id).eq("status", "PENDING"),
     ]);
 
-  const initial = {
-    active: ((active ?? []) as ActiveRow[]),
+  return NextResponse.json({
+    active: active ?? [],
     hours_today: Number(hoursData ?? 0),
     pending_overrides: pendingOverrides ?? 0,
     pending_closes: pendingCloses ?? 0,
-  };
-
-  return (
-    <main className="p-8">
-      <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-      <p className="mt-2 text-muted-foreground">Welcome back, {ctx.full_name}.</p>
-      <DashboardLive initial={initial} />
-    </main>
-  );
+  });
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { loadContractData } from "@/lib/contracts/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 type Params = Promise<{ id: string }>;
 
 export default async function ContractDetail({ params }: { params: Params }) {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const { id } = await params;
   const data = await loadContractData(ctx.tenant_id, id);
   if (!data) notFound();

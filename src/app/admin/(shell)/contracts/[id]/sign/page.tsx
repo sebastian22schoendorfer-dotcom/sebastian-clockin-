@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { loadContractData } from "@/lib/contracts/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +13,7 @@ type SearchParams = Promise<{ error?: string }>;
 export default async function SignContractPage({
   params, searchParams,
 }: { params: Params; searchParams: SearchParams }) {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const { id } = await params;
   const { error } = await searchParams;
   const data = await loadContractData(ctx.tenant_id, id);

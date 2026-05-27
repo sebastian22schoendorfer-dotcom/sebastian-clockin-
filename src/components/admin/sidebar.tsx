@@ -1,20 +1,23 @@
 import Link from "next/link";
 
-const NAV = [
+type NavItem = { href: string; label: string; ownerOnly?: boolean };
+
+const NAV: NavItem[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/overrides", label: "Overrides" },
   { href: "/admin/closes", label: "Pending closes" },
   { href: "/admin/locations", label: "Locations" },
   { href: "/admin/staff", label: "Staff" },
-  { href: "/admin/contracts", label: "Contracts" },
-  { href: "/admin/payroll", label: "Payroll" },
+  { href: "/admin/contracts", label: "Contracts", ownerOnly: true },
+  { href: "/admin/payroll", label: "Payroll", ownerOnly: true },
   { href: "/admin/audit", label: "Audit log" },
   { href: "/admin/settings", label: "Settings" },
 ];
 
 export function Sidebar({
   fullName, role, email,
-}: { fullName: string; role: string; email: string }) {
+}: { fullName: string; role: "OWNER" | "SUPERVISOR"; email: string }) {
+  const items = NAV.filter((item) => !item.ownerOnly || role === "OWNER");
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-border bg-card">
       <div className="px-6 py-5">
@@ -22,7 +25,7 @@ export function Sidebar({
         <p className="text-xs text-muted-foreground">Bonaire</p>
       </div>
       <nav className="flex flex-1 flex-col gap-1 px-3">
-        {NAV.map((item) => (
+        {items.map((item) => (
           <Link key={item.href} href={item.href} className="rounded-md px-3 py-2 text-sm hover:bg-secondary">
             {item.label}
           </Link>

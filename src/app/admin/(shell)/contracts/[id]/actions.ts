@@ -2,12 +2,12 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { requireAdmin } from "@/lib/auth/admin-context";
+import { requireOwner } from "@/lib/auth/admin-context";
 import { signContract } from "@/lib/contracts/server";
 import { createServiceClient } from "@/lib/supabase/server";
 
 export async function submitSignature(formData: FormData): Promise<void> {
-  const ctx = await requireAdmin();
+  const ctx = await requireOwner();
   const id = formData.get("id");
   const dataUrl = formData.get("signature_data_url");
   if (typeof id !== "string" || typeof dataUrl !== "string" || dataUrl.length < 100) {
